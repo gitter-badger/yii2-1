@@ -10,6 +10,7 @@ $config = [
         'assetManager' => [
             'bundles' => require(__DIR__ . '/bundles.php'),
         ],
+        'urlManager' => require(__DIR__ . '/routes.php'),
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'I21bYSGwnkD1C2Jniqe5wjpgUsynA9xf',
@@ -52,6 +53,8 @@ if (YII_ENV_DEV) {
 
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = 'yii\gii\Module';
+
+    $config['components']['assetManager']['forceCopy'] = true;
 }
 
 return $config;

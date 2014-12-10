@@ -3,6 +3,7 @@ module.exports = function(grunt) {
     var app = 'app-frontend/';
     var appJs = app + 'js/';
     var appCss = app + 'css/';
+    var bower = 'vendor/bower/';
 
     var dist = 'web/dist/';
     var distJs = dist + 'js/';
@@ -14,6 +15,9 @@ module.exports = function(grunt) {
         concat: {
             main: {
                 src: [
+                    bower + 'jquery/dist/jquery.js',
+                    bower + 'bootstrap/dist/js/bootstrap.min.js',
+                    bower + 'angular/angular.js',
                     appJs + 'main/main.js'
                 ],
                 dest: distJs + 'main.js'
@@ -22,6 +26,7 @@ module.exports = function(grunt) {
         concat_css: {
             main: {
                 src: [
+                    bower + 'bootstrap/dist/css/bootstrap.min.css',
                     appCss + "main/*.css"
                 ],
                 dest: distCss + "main.css"
