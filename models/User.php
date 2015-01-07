@@ -2,102 +2,49 @@
 
 namespace app\models;
 
-class User extends \yii\base\Object implements \yii\web\IdentityInterface
+use Yii;
+
+class User extends \yii\db\ActiveRecord
 {
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
 
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
-
-    /**
-     * @inheritdoc
-     */
-    public static function findIdentity($id)
+    public static function tableName()
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        return 'f_user';
     }
 
-    /**
-     * @inheritdoc
-     */
-    public static function findIdentityByAccessToken($token, $type = null)
+    public function rules()
     {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        return [
+            [['username', 'email', 'password', 'role', 'created_at', 'updated_at'], 'required'],
+            [['created_at', 'updated_at', 'lastvisit_at', 'status'], 'integer'],
+            [['username'], 'string', 'max' => 25],
+            [['email'], 'string', 'max' => 255],
+            [['password'], 'string', 'max' => 60],
+            [['aktiv_key'], 'string', 'max' => 32],
+            [['role'], 'string', 'max' => 20],
+            [['username'], 'unique'],
+            [['email'], 'unique']
+        ];
     }
 
-    /**
-     * Finds user by username
-     *
-     * @param  string      $username
-     * @return static|null
-     */
-    public static function findByUsername($username)
+    public function attributeLabels()
     {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        return [
+            'id' => 'ID',
+            'username' => 'Username',
+            'email' => 'Email',
+            'password' => 'Password',
+            'aktiv_key' => 'Aktiv Key',
+            'role' => 'Role',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
+            'lastvisit_at' => 'Lastvisit At',
+            'status' => 'Status',
+        ];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getId()
+    public function getProfile()
     {
-        return $this->id;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getAuthKey()
-    {
-        return $this->authKey;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function validateAuthKey($authKey)
-    {
-        return $this->authKey === $authKey;
-    }
-
-    /**
-     * Validates password
-     *
-     * @param  string  $password password to validate
-     * @return boolean if password provided is valid for current user
-     */
-    public function validatePassword($password)
-    {
-        return $this->password === $password;
+        return $this->hasOne(Profile::className(), ['user_id' => 'id']);
     }
 }

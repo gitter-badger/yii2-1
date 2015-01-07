@@ -17,8 +17,10 @@ module.exports = function(grunt) {
                 src: [
                     bower + 'jquery/dist/jquery.js',
                     bower + 'bootstrap/dist/js/bootstrap.min.js',
-                    bower + 'angular/angular.js',
-                    appJs + 'main/main.js'
+                    bower + 'jquery.easing/js/jquery.easing.js',
+                    bower + 'jquery.scrollTo/jquery.scrollTo.min.js',
+                    appJs + 'home/wow.min.js',
+                    appJs + 'home/main.js'
                 ],
                 dest: distJs + 'main.js'
             }
@@ -27,7 +29,7 @@ module.exports = function(grunt) {
             main: {
                 src: [
                     bower + 'bootstrap/dist/css/bootstrap.min.css',
-                    appCss + "main/*.css"
+                    appCss + "home/*.css"
                 ],
                 dest: distCss + "main.css"
             }
@@ -38,7 +40,7 @@ module.exports = function(grunt) {
                     banner: '/* <%= pkg.name %> | v<%= pkg.version %> | <%= pkg.author %> : <%= grunt.template.today("dd.mm.yyyy") %> */'
                 },
                 files: {
-                    'web/dist/css/main.min.css': [ 'web/dist/css/main.css'],
+                    'web/dist/css/main.min.css': [ 'web/dist/css/main.css']
                 }
             }
         },

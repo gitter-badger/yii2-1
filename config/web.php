@@ -6,6 +6,11 @@ $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'modules' => [
+        'admin' => [
+            'class' => 'app\modules\admin\Module',
+        ],
+    ],
     'components' => [
         'assetManager' => [
             'bundles' => require(__DIR__ . '/bundles.php'),
@@ -17,6 +22,14 @@ $config = [
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
+            /*'class' => 'yii\caching\MemCache',
+                'servers' => [
+                    [
+                        'host' => 'localhost',
+                        'port' => 11211,
+                        'weight' => 60,
+                    ],
+                ], */
         ],
         'user' => [
             'identityClass' => 'app\models\User',
@@ -54,7 +67,7 @@ if (YII_ENV_DEV) {
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = 'yii\gii\Module';
 
-    $config['components']['assetManager']['forceCopy'] = true;
+    //$config['components']['assetManager']['forceCopy'] = true;
 }
 
 return $config;
