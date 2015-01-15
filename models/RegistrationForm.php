@@ -18,8 +18,11 @@ class RegistrationForm extends Model
     public function rules()
     {
         return [
-            ['phone', 'filter', 'filter' => 'trim'],
-            ['phone', 'required'],
+            [['phone', 'first_name', 'last_name', 'email', 'password', 'verifyPassword'], 'filter', 'filter' => 'trim'],
+            [['phone', 'first_name', 'last_name', 'email', 'password', 'verifyPassword'], 'required'],
+            ['email', 'email'],
+            ['email', 'unique'],
+            ['verifyPassword', 'compare', 'compareAttribute'=>'password'],
 
         ];
     }

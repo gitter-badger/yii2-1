@@ -6,18 +6,16 @@ use Yii;
 
 class Profile extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+
     public static function tableName()
     {
-        return 'f_profile';
+        return '{{%profile}}';
     }
 
     public function rules()
     {
         return [
-            [['user_id'], 'required'],
+            [['first_name', 'last_name', 'phone'], 'required'],
             [['user_id'], 'integer'],
             [['first_name', 'last_name'], 'string', 'max' => 100],
             [['avatar'], 'string', 'max' => 255],
@@ -30,12 +28,12 @@ class Profile extends \yii\db\ActiveRecord
     {
         return [
             'user_id' => 'User ID',
-            'first_name' => 'First Name',
-            'last_name' => 'Last Name',
+            'first_name' => 'Имя',
+            'last_name' => 'Фамилия',
+            'phone' => 'Номер телефона',
             'avatar' => 'Avatar',
             'city' => 'City',
             'address' => 'Address',
-            'phone' => 'Phone',
         ];
     }
 

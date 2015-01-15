@@ -1,0 +1,6 @@
+.modal{
+    word-wrap: break-word;
+}
+.modal .modal-content{
+    border-radius: 0;
+}
