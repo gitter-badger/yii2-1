@@ -1,7 +1,5 @@
 <?php
 
-$params = require(__DIR__ . '/params.php');
-
 $config = [
     'id' => 'basic',
     'defaultRoute' => 'main/default/index',
@@ -45,7 +43,7 @@ $config = [
         ],
         'db' => require(__DIR__ . '/db.php'),
     ],
-    'params' => $params,
+    'params' => require(__DIR__ . '/params.php'),
 ];
 
 if (YII_ENV_DEV) {
