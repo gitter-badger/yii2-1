@@ -3,7 +3,7 @@
 
 # composer vendor dir
 /vendor
-/composer.lock
+composer.lock
 
 # node vendor dir
 node_modules

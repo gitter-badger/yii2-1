@@ -4,9 +4,11 @@ $params = require(__DIR__ . '/params.php');
 
 $config = [
     'id' => 'basic',
+    'defaultRoute' => 'main/default/index',
     'basePath' => dirname(__DIR__),
     'language' => 'ru-RU',
     'bootstrap' => ['log'],
+    'modules' => require(__DIR__ . '/modules.php'),
     'components' => [
         'assetManager' => [
             'bundles' => require(__DIR__ . '/bundles.php'),
@@ -14,17 +16,16 @@ $config = [
         'urlManager' => require(__DIR__ . '/routes.php'),
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => 'I21bYSGwnkD1C2Jniqe5wjpgUsynA9xf',
+            'cookieValidationKey' => 'I21bYSGwnkD1C2kniqe5wjpgUsynA9xf',
         ],
-        'cache' => [
-            'class' => 'yii\caching\FileCache',
-        ],
+        'cache' => require(__DIR__ . '/memcache.php'),
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'app\modules\user\models\User',
             'enableAutoLogin' => true,
+            'loginUrl' => ['user/default/login'],
         ],
         'errorHandler' => [
-            'errorAction' => 'site/error',
+            'errorAction' => 'main/default/error',
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',

@@ -6,5 +6,6 @@ return [
     'username' => 'root',
     'password' => '',
     'charset' => 'utf8',
-    'tablePrefix'=>'y_'
+    'tablePrefix'=>'y_',
+    'schemaCacheDuration' => YII_DEBUG ? 300 : 1*24*3600, // 1 days
 ];
