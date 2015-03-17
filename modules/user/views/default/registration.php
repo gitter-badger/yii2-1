@@ -99,7 +99,7 @@
             l.start();
             $.ajax({
                 type: 'post',
-                url: app.baseUrl + self.attr('action'),
+                url: config.baseUrl + self.attr('action'),
                 dataType: 'json',
                 data: self.serialize(),
                 success: function(data) {

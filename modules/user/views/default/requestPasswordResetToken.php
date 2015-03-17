@@ -1,50 +1,34 @@
 <?php
 use yii\helpers\Html;
-
 /* @var $this yii\web\View */
-/* @var $model app\models\LoginForm */
-
-$this->title = 'Login';
+/* @var $model app\modules\user\models\PasswordResetRequestForm */
+$this->title = 'Восстановление пароля';
 ?>
-<div class="site-login">
+<div class="site-request-password-reset">
     <div class="col-md-6 col-md-offset-3">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
             </div>
             <div class="panel-body">
+                <p>Введите ваш email. На него будет отправлена ссылка для востановления пароля. </p>
                 <?=Html::beginForm(
-                    $action = 'user/default/login',
+                    $action = 'request-password-reset',
                     $method = 'post',
                     $options = [
-                        'id'=>'login-form',
-                        'class' => 'form-horizontal'
+                        'id'=>'request-password-reset-form',
+                        'class' => ''
                     ]
                 ) ?>
                 <div class="form-group">
-                    <?= Html::activeLabel($model,'username', [ 'class' => 'col-sm-4 control-label required']); ?>
-                    <div class="col-sm-8">
-                        <?= Html::activeTextInput($model, 'username', ['class' => 'form-control']); ?>
-                    </div>
+                    <?= Html::activeLabel($model,'email', ['class' => 'control-label required']); ?>
+                    <?= Html::activeTextInput($model, 'email', ['class' => 'form-control']); ?>
                 </div>
                 <div class="form-group">
-                    <?= Html::activeLabel($model,'password', ['class' => 'col-sm-4 control-label required']); ?>
-                    <div class="col-sm-8">
-                        <?= Html::activeTextInput($model, 'password', ['class' => 'form-control']); ?>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-4 col-sm-8">
-                        <?= Html::activeCheckbox($model, 'rememberMe', ['class' => '']); ?>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-4 col-sm-8">
-                        <button type="submit" class="ladda-button btn btn-success" data-style="expand-right" data-size="l">
-                            <span class="ladda-label">Войти</span>
-                            <span class="ladda-spinner"></span>
-                        </button>
-                    </div>
+                    <button type="submit" class="ladda-button btn btn-success" data-style="expand-right" data-size="l">
+                        <span class="ladda-label">Отправить</span>
+                        <span class="ladda-spinner"></span>
+                    </button>
                 </div>
                 <?=Html::endForm() ?>
                 <div class="row">
@@ -52,7 +36,7 @@ $this->title = 'Login';
                         <?= Html::a('Регистрация', ['/user/default/registration']) ?>
                     </div>
                     <div class="col-sm-6">
-                        <?= Html::a('Забыли пароль?', ['/user/default/request-password-reset']) ?>
+                        <?= Html::a('Войти', ['/user/default/login']) ?>
                     </div>
                 </div>
             </div>
@@ -60,10 +44,10 @@ $this->title = 'Login';
     </div>
 </div>
 <?php $this->registerJs("
-        jQuery('#login-form').submit(function(e){
+        jQuery('#request-password-reset-form').submit(function(e){
             e.preventDefault();
             var self = $(this);
-            var l = Ladda.create( document.querySelector('#login-form .ladda-button') );
+            var l = Ladda.create( document.querySelector('#request-password-reset-form .ladda-button') );
             l.start();
             $.ajax({
                 type: 'post',

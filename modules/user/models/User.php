@@ -73,6 +73,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         if (parent::beforeSave($insert)) {
             if($insert == true){
+                $this->status = self::STATUS_WAIT;
                 $this->uniqueUsername();
                 $this->generateAuthKey();
                 $this->generateEmailConfirmToken();

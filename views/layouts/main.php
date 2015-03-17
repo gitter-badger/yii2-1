@@ -53,8 +53,9 @@ if($success || $error){
                     ['label' => 'Home', 'url' => ['/main/default/index']],
                     ['label' => 'About', 'url' => ['/main/default/about']],
                     ['label' => 'Contact', 'url' => ['/main/contact/index']],
-                    Yii::$app->user->isGuest ?
-                        ['label' => 'Login', 'url' => ['/user/default/login']] :
+                    Yii::$app->user->isGuest ? ['label' => 'Регистрация', 'url' => ['/user/default/registration']] : [],
+                        Yii::$app->user->isGuest ?
+                        ['label' => 'Login', 'url' => ['/user/default/login']]:
                         ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
                             'url' => ['/user/default/logout'],
                             'linkOptions' => ['data-method' => 'post']],

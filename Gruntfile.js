@@ -21,6 +21,7 @@ module.exports = function(grunt) {
                     libs + 'ladda/spin.min.js',
                     libs + 'ladda/ladda.min.js',
                     libs + 'ejs/ejs_production.js',
+                    appJs + 'config.js',
                     appJs + 'app.js'
                 ],
                 dest: distJs + 'main.js'
