@@ -17,12 +17,24 @@ module.exports = function(grunt) {
             main: {
                 src: [
                     bower + 'jquery/dist/jquery.js',
+                    bower + 'angular/angular.js',
+                    bower + 'angular-animate/angular-animate.js',
+                    bower + 'angular-cookies/angular-cookies.js',
+                    bower + 'angular-resource/angular-resource.js',
+                    bower + 'angular-route/angular-route.js',
+
                     bower + 'bootstrap/dist/js/bootstrap.min.js',
-                    libs + 'ladda/spin.min.js',
-                    libs + 'ladda/ladda.min.js',
+
+                    bower + 'ladda/dist/spin.min.js',
+                    bower + 'ladda/dist/ladda.min.js',
+                    bower + 'angular-ladda/dist/angular-ladda.min.js',
+
+                    //libs + 'ladda/spin.min.js',
+                    //libs + 'ladda/ladda.min.js',
                     libs + 'ejs/ejs_production.js',
                     appJs + 'config.js',
-                    appJs + 'app.js'
+                    appJs + 'app.js',
+                    appJs + 'main/**/*.js',
                 ],
                 dest: distJs + 'main.js'
             }
@@ -31,7 +43,8 @@ module.exports = function(grunt) {
             main: {
                 src: [
                     bower + 'bootstrap/dist/css/bootstrap.min.css',
-                    libs + 'ladda/ladda-themeless.min.css',
+                    bower + 'ladda/dist/ladda-themeless.min.css',
+                    //libs + 'ladda/ladda-themeless.min.css',
                     appCss + "main/*.css"
                 ],
                 dest: distCss + "main.css"

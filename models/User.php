@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\user\models;
+namespace app\modules;
 
 use Yii;
 use yii\caching\DbDependency;

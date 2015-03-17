@@ -1,34 +1,53 @@
-window.app = (function ($) {
-    var public = {};
+angular.module('myApp', [
+        'ngAnimate',
+        'ngCookies',
+        'ngResource',
+        'ngRoute',
+        'angular-ladda'
+        // 'ngSanitize',
+        // 'ngTouch'
+    ])
+    .config(function ($httpProvider) {
+        var token = angular.element('head meta[name="csrf-token"]').attr('content');
 
-    /* -- public methods -- */
-    public.init = function () {
-        ajaxSetup();
-    };
-    public.alert = function(mess, $class){
-        var content = new EJS({
-            url: config.baseUrl + 'templates/commons/alert'
-        }).render({ mess: mess, class_name: $class });
-        config.$modal.html(content).modal();
-    };
+        $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+        $httpProvider.defaults.headers.post['X-CSRF-Token'] = token;
 
-    /* -- private methods -- */
-    var ajaxSetup = function(){
-        $.ajaxSetup({
-            error: function(jqXhr, data, error) {
-                var content = new EJS({
-                    url: config.baseUrl + 'templates/commons/error_alert'
-                }).render( {mess: jqXhr.responseText} );
-                config.$modal.html(content).modal();
-                return console.log(jqXhr.responseText);
-            }
+        $httpProvider.defaults.transformRequest = [function (data) {
+            var param = function (obj) {
+                var query = '';
+                var name, value, fullSubName, subValue, innerObj, i;
+                for (name in obj) {
+                    value = obj[name];
+                    if (value instanceof Array) {
+                        for (i = 0; i < value.length; ++i) {
+                            subValue = value[i];
+                            fullSubName = name + '[' + i + ']';
+                            innerObj = {};
+                            innerObj[fullSubName] = subValue;
+                            query += param(innerObj) + '&';
+                        }
+                    }
+                    else if (value instanceof Object) {
+                        for (subName in value) {
+                            subValue = value[subName];
+                            fullSubName = name + '[' + subName + ']';
+                            innerObj = {};
+                            innerObj[fullSubName] = subValue;
+                            query += param(innerObj) + '&';
+                        }
+                    }
+                    else if (value !== undefined && value !== null) {
+                        query += encodeURIComponent(name) + '=' + encodeURIComponent(value) + '&';
+                    }
+                }
+                return query.length ? query.substr(0, query.length - 1) : query;
+            };
+            return angular.isObject(data) && String(data) !== '[object File]' ? param(data) : data;
+        }];
+    })
+    .config(function (laddaProvider) {
+        laddaProvider.setOption({
+            style: 'expand-left'
         });
-    };
-
-    return public;
-
-})(jQuery);
-
-jQuery( document ).ready(function() {
-    app.init();
-});
+    });
