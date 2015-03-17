@@ -1,3 +1,12 @@
+'use strict';
+
+/**
+ * @ngdoc overview
+ * @name myApp
+ * @description - Главный модуль приложения
+ * # myApp
+ *
+ */
 angular.module('myApp', [
         'ngAnimate',
         'ngCookies',
