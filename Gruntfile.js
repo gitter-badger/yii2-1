@@ -31,8 +31,7 @@ module.exports = function(grunt) {
 
                     //libs + 'ladda/spin.min.js',
                     //libs + 'ladda/ladda.min.js',
-                    libs + 'ejs/ejs_production.js',
-                    appJs + 'config.js',
+                    //libs + 'ejs/ejs_production.js',
                     appJs + 'app.js',
                     appJs + 'main/**/*.js',
                 ],
@@ -56,7 +55,9 @@ module.exports = function(grunt) {
                     banner: '/* <%= pkg.name %> | v<%= pkg.version %> | <%= pkg.author %> : <%= grunt.template.today("dd.mm.yyyy") %> */'
                 },
                 files: {
-                    'web/dist/css/main.min.css': [ 'web/dist/css/main.css'],
+                    'web/dist/css/main.min.css': [
+                        distCss + 'main.css'
+                    ],
                 }
             }
         },

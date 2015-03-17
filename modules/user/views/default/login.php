@@ -13,7 +13,7 @@ $this->title = 'Вход на сайт';
                 <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
             </div>
             <div class="panel-body">
-                <form role="form" id="login-form" class="form-horizontal" ng-submit="login()">
+                <form role="form" id="login-form" class="form-horizontal">
                     <div class="form-group">
                         <?= Html::activeLabel($model,'username', [ 'class' => 'col-sm-4 control-label required']); ?>
                         <div class="col-sm-8">
@@ -35,7 +35,7 @@ $this->title = 'Вход на сайт';
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-4 col-sm-8">
-                            <button type="submit" class="btn btn-success" ladda="loginLoading">
+                            <button type="submit" class="btn btn-success" ladda="loginLoading" ng-click="login()">
                                 Войти
                             </button>
                         </div>

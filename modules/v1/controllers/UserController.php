@@ -9,6 +9,12 @@ use app\models\LoginForm;
 
 class UserController extends Controller
 {
+    /**
+     * Вход на сайт
+     *
+     * @return LoginForm | string
+     * @throws \yii\base\InvalidConfigException
+     */
     public function actionLogin()
     {
         $model = new LoginForm();
