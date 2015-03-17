@@ -8,9 +8,11 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Html;
 use yii\web\BadRequestHttpException;
 
-use app\modules\user\models\User;
+use app\models\User;
+use app\models\LoginForm;
+
 use app\modules\user\models\Profile;
-use app\modules\user\models\LoginForm;
+
 use app\modules\user\helpers\GenerateUsername;
 use app\modules\user\models\ConfirmEmailForm;
 use app\modules\user\models\PasswordResetRequestForm;
@@ -69,34 +71,20 @@ class DefaultController extends Controller
         ]);
     }
 
+    /**
+     * Открывает форму для логина
+     *
+     * @return string
+     */
     public function actionLogin(){
+
         if (!\Yii::$app->user->isGuest) {
             return $this->goHome();
         }
 
-        $model = new LoginForm();
-
-        $request = Yii::$app->request;
-        if ($request->isAjax && $model->load(Yii::$app->request->post())) {
-            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-            $errors = ActiveForm::validate($model);
-            if(count($errors) != 0){
-                echo json_encode($errors);
-            } else {
-                $model->login();
-            }
-            Yii::$app->end();
-        }
-
-
-
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        } else {
-            return $this->render('login', [
-                'model' => $model,
-            ]);
-        }
+        return $this->render('login', [
+            'model' => new LoginForm(),
+        ]);
     }
 
     public function actionLogout(){

@@ -17,7 +17,7 @@ class LoginForm extends Model
     private $_user = false;
 
     /**
-     * @return array the validation rules.
+     * @inheritdoc
      */
     public function rules()
     {
@@ -28,6 +28,18 @@ class LoginForm extends Model
             ['rememberMe', 'boolean'],
             // password is validated by validatePassword()
             ['password', 'validatePassword'],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'username'   => 'Email или логин',
+            'password'   => 'Пароль',
+            'rememberMe' => 'Запомнить меня'
         ];
     }
 
@@ -78,14 +90,5 @@ class LoginForm extends Model
         }
 
         return $this->_user;
-    }
-
-    public function attributeLabels()
-    {
-        return [
-            'username'   => 'Email или логин',
-            'password'   => 'Пароль',
-            'rememberMe' => 'Запомнить меня'
-        ];
     }
 }
