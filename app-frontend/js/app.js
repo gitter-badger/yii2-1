@@ -38,7 +38,7 @@ angular.module('myApp', [
                         }
                     }
                     else if (value instanceof Object) {
-                        for (subName in value) {
+                        for (var subName in value) {
                             subValue = value[subName];
                             fullSubName = name + '[' + subName + ']';
                             innerObj = {};
