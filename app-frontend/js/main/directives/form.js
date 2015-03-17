@@ -1,8 +1,11 @@
+'use strict';
+
 /**
  * @ngdoc directive
  * @name myApp.directive:form
- * @description следит за появлением ошибок в форме
+ * @description
  * # form
+ * Следит за появлением ошибок в форме
  */
 angular.module('myApp')
     .directive('form', ['$compile', function ($compile) {

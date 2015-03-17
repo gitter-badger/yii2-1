@@ -3,9 +3,9 @@
 /**
  * @ngdoc overview
  * @name myApp
- * @description - Главный модуль приложения
+ * @description
  * # myApp
- *
+ * Главный модуль приложения
  */
 angular.module('myApp', [
         'ngAnimate',

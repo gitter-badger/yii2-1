@@ -1,8 +1,11 @@
+'use strict';
+
 /**
  * @ngdoc directive
  * @name myApp.directive:error
- * @description показывает ошибки валидации
+ * @description
  * # error
+ * Показывает ошибки валидации
  */
 angular.module('myApp')
     .directive('error', ['$compile', '$http', '$templateCache', function ($compile, $http, $templateCache) {

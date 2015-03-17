@@ -1,3 +1,13 @@
+'use strict';
+
+/**
+ * @ngdoc function
+ * @name myApp.controller:LoginCtrl
+ * @description
+ * # LoginCtrl
+ * Контроллер для входа на сайт
+ */
+
 angular.module('myApp')
     .controller('LoginCtrl', ['$scope', 'rest', '$window', function ($scope, rest, $window) {
 

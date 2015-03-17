@@ -1,8 +1,11 @@
+'use strict';
+
 /**
  * @ngdoc service
  * @name myApp.rest
- * @description - описание всех REST запросов
+ * @description
  * # rest
+ * Описание всех REST запросов
  */
 angular.module('myApp')
     .service('rest', function ($http, $location, $routeParams) {
