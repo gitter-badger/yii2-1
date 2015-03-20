@@ -1,0 +1,7 @@
+/**
+* Для обязательных полей форм
+*/
+.required-field:after{
+    content: ' *';
+    color: #a94442
+}

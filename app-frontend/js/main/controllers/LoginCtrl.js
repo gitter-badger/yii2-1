@@ -14,6 +14,10 @@ angular.module('myApp')
         rest.path = 'v1/user/login';
 
         $scope.loginLoading = false;
+        $scope.model = {
+            username: '',
+            password: ''
+        };
 
         var errorCallback = function (data) {
             delete $window.sessionStorage._auth;
@@ -25,7 +29,6 @@ angular.module('myApp')
             rest.postModel($scope.model)
                 .success(function (data) {
                     $window.sessionStorage._auth = data;
-                    //toaster.pop('success', "Success");
                     window.setTimeout(function () {
                         document.location = '';
                     }, 1000);

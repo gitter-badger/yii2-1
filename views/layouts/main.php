@@ -37,6 +37,7 @@ if($success || $error){
 </head>
 <body>
 <div class="modal fade"></div>
+<toaster-container></toaster-container>
 <?php $this->beginBody() ?>
     <div class="wrap">
         <?php

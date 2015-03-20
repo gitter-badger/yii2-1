@@ -2,86 +2,65 @@
     use yii\helpers\Html;
     use yii\web\View;
     $this->title = 'Регистрация';
-
 ?>
-<style>
-
-    .required:after{
-        content: ' *';
-        color: #a94442
-    }
-</style>
-<div class="row">
+<div class="row registration" ng-controller="RegistrationCtrl">
     <div class="col-md-6 col-md-offset-3">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
             </div>
             <div class="panel-body">
-
-                <?=Html::beginForm(
-                    $action = 'user/default/registration',
-                    $method = 'post',
-                    $options = [
-                        'id'=>'register-form',
-                        'class' => 'form-horizontal'
-                    ]
-                ) ?>
-
-                <div class="form-group">
-                    <?= Html::activeLabel($profile,'first_name', [ 'class' => 'col-sm-4 control-label required']); ?>
-                    <div class="col-sm-8">
-                        <?= Html::activeTextInput($profile, 'first_name', ['class' => 'form-control']); ?>
+                <form role="form" id="registration-form" class="form-horizontal" method="post">
+                    <div class="form-group">
+                        <?= Html::activeLabel($model,'first_name', [ 'class' => 'col-sm-4 control-label required-field']); ?>
+                        <div class="col-sm-8">
+                            <?= Html::activeTextInput($model, 'first_name', ['class' => 'form-control', 'ng-model' => 'model.first_name']); ?>
+                            <error field="first_name"></error>
+                        </div>
                     </div>
-                </div>
-
-                <div class="form-group">
-                    <?= Html::activeLabel($profile,'last_name', ['class' => 'col-sm-4 control-label required']); ?>
-                    <div class="col-sm-8">
-                        <?= Html::activeTextInput($profile, 'last_name', ['class' => 'form-control']); ?>
+                    <div class="form-group">
+                        <?= Html::activeLabel($model,'last_name', ['class' => 'col-sm-4 control-label required-field']); ?>
+                        <div class="col-sm-8">
+                            <?= Html::activeTextInput($model, 'last_name', ['class' => 'form-control', 'ng-model' => 'model.last_name']); ?>
+                            <error field="last_name"></error>
+                        </div>
                     </div>
-                </div>
-
-                <div class="form-group">
-                    <?= Html::activeLabel($user,'email', ['class' => 'col-sm-4 control-label required']); ?>
-                    <div class="col-sm-8">
-                        <?= Html::activeTextInput($user, 'email', ['class' => 'form-control']); ?>
+                    <div class="form-group">
+                        <?= Html::activeLabel($model,'email', ['class' => 'col-sm-4 control-label required-field']); ?>
+                        <div class="col-sm-8">
+                            <?= Html::activeTextInput($model, 'email', ['class' => 'form-control', 'ng-model' => 'model.email']); ?>
+                            <error field="email"></error>
+                        </div>
                     </div>
-                </div>
-
-                <div class="form-group">
-                    <?= Html::activeLabel($profile,'phone', ['class' => 'col-sm-4 control-label required']); ?>
-                    <div class="col-sm-8">
-                        <?= Html::activeTextInput($profile, 'phone', ['class' => 'form-control']); ?>
+                    <div class="form-group">
+                        <?= Html::activeLabel($model,'phone', ['class' => 'col-sm-4 control-label required-field']); ?>
+                        <div class="col-sm-8">
+                            <?= Html::activeTextInput($model, 'phone', ['class' => 'form-control', 'ng-model' => 'model.phone']); ?>
+                            <error field="phone"></error>
+                        </div>
                     </div>
-                </div>
-
-                <div class="form-group">
-                    <?= Html::activeLabel($user,'password', ['class' => 'col-sm-4 control-label required']); ?>
-                    <div class="col-sm-8">
-                        <?= Html::activePasswordInput($user, 'password', ['class' => 'form-control']); ?>
+                    <div class="form-group">
+                        <?= Html::activeLabel($model,'password', ['class' => 'col-sm-4 control-label required-field']); ?>
+                        <div class="col-sm-8">
+                            <?= Html::activePasswordInput($model, 'password', ['class' => 'form-control', 'ng-model' => 'model.password']); ?>
+                            <error field="password"></error>
+                        </div>
                     </div>
-                </div>
-
-                <div class="form-group">
-                    <?= Html::activeLabel($user,'verifyPassword', ['class' => 'col-sm-4 control-label required']); ?>
-                    <div class="col-sm-8">
-                        <?= Html::activePasswordInput($user, 'verifyPassword', ['class' => 'form-control']); ?>
+                    <div class="form-group">
+                        <?= Html::activeLabel($model,'verifyPassword', ['class' => 'col-sm-4 control-label required-field']); ?>
+                        <div class="col-sm-8">
+                            <?= Html::activePasswordInput($model, 'verifyPassword', ['class' => 'form-control', 'ng-model' => 'model.verifyPassword']); ?>
+                            <error field="verifyPassword"></error>
+                        </div>
                     </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-sm-offset-4 col-sm-8">
-                        <button type="submit" class="ladda-button btn btn-success" data-style="expand-right" data-size="l">
-                            <span class="ladda-label">Send</span>
-                            <span class="ladda-spinner"></span>
-                        </button>
+                    <div class="form-group">
+                        <div class="col-sm-offset-4 col-sm-8">
+                            <button type="submit" class="btn btn-success" ladda="loading" ng-click="registration()">
+                                Регистрация
+                            </button>
+                        </div>
                     </div>
-                </div>
-
-                <?=Html::endForm() ?>
-
-
+                </form>
             </div>
         </div>
         <p class="text-center">
@@ -89,35 +68,3 @@
         </p>
     </div>
 </div>
-
-<?php
-    $this->registerJs("
-        jQuery('#register-form').submit(function(e){
-            e.preventDefault();
-            var self = $(this);
-            var l = Ladda.create( document.querySelector('#register-form .ladda-button') );
-            l.start();
-            $.ajax({
-                type: 'post',
-                url: config.baseUrl + self.attr('action'),
-                dataType: 'json',
-                data: self.serialize(),
-                success: function(data) {
-                    console.log(data);
-                    if(data.url){
-                         window.location = data.url;
-                    } else {
-                        var errors;
-                        if( errors = self.find('.text-danger') )
-                            errors.remove();
-                        $.each(data, function(key, val){
-                            var input = self.find( '#' + key);
-                            input.closest('div').append('<div class=\'text-danger\'>' + val + '</div>');
-                        });
-                    }
-                }
-            }).always(function() { l.stop(); });
-        });
-
-    ", View::POS_END, 'my-options');
-?>

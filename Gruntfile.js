@@ -22,6 +22,7 @@ module.exports = function(grunt) {
                     bower + 'angular-cookies/angular-cookies.js',
                     bower + 'angular-resource/angular-resource.js',
                     bower + 'angular-route/angular-route.js',
+                    bower + 'angularjs-toaster/toaster.js',
 
                     bower + 'bootstrap/dist/js/bootstrap.min.js',
 
@@ -43,6 +44,7 @@ module.exports = function(grunt) {
                 src: [
                     bower + 'bootstrap/dist/css/bootstrap.min.css',
                     bower + 'ladda/dist/ladda-themeless.min.css',
+                    bower + 'angularjs-toaster/toaster.css',
                     //libs + 'ladda/ladda-themeless.min.css',
                     appCss + "main/*.css"
                 ],

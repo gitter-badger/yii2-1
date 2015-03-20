@@ -6,23 +6,23 @@ use yii\helpers\Html;
 
 $this->title = 'Вход на сайт';
 ?>
-<div class="site-login" ng-controller="LoginCtrl">
+<div class="login" ng-controller="LoginCtrl">
     <div class="col-md-6 col-md-offset-3">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
             </div>
             <div class="panel-body">
-                <form role="form" id="login-form" class="form-horizontal">
+                <form role="form" id="login-form" class="form-horizontal" method="post">
                     <div class="form-group">
-                        <?= Html::activeLabel($model,'username', [ 'class' => 'col-sm-4 control-label required']); ?>
+                        <?= Html::activeLabel($model,'username', [ 'class' => 'col-sm-4 control-label required-field']); ?>
                         <div class="col-sm-8">
                             <?= Html::activeTextInput($model, 'username', ['class' => 'form-control', 'ng-model' => 'model.username']); ?>
                             <error field="username"></error>
                         </div>
                     </div>
                     <div class="form-group">
-                        <?= Html::activeLabel($model,'password', ['class' => 'col-sm-4 control-label required']); ?>
+                        <?= Html::activeLabel($model,'password', ['class' => 'col-sm-4 control-label required-field']); ?>
                         <div class="col-sm-8">
                             <?= Html::activePasswordInput($model, 'password', ['class' => 'form-control', 'ng-model' => 'model.password']); ?>
                             <error field="password"></error>

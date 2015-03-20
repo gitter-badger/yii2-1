@@ -12,7 +12,8 @@ angular.module('myApp', [
         'ngCookies',
         'ngResource',
         'ngRoute',
-        'angular-ladda'
+        'angular-ladda',
+        'toaster'
         // 'ngSanitize',
         // 'ngTouch'
     ])

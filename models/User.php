@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\modules\user\models\Profile;
 use Yii;
 use yii\caching\DbDependency;
 
@@ -11,8 +12,6 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     const STATUS_ACTIVE = 1;
     const STATUS_BLOCKED = 2;
 
-
-    public $verifyPassword;
     public $password;
 
     public static function tableName()
@@ -23,8 +22,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
-            [['email', 'password', 'verifyPassword'], 'required', 'on'=>'register'],
-            ['verifyPassword', 'compare', 'compareAttribute'=>'password'],
+            [['email', 'password'], 'required', 'on'=>'register'],
             ['email', 'email'],
 
             [['created_at', 'updated_at', 'lastvisit_at', 'status'], 'integer'],
@@ -64,6 +62,26 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         ];
     }
 
+    /**
+     * Безопасные поля
+     *
+     * @return array
+     */
+    public function fields() {
+        return [
+            'id',
+            'email',
+            'firstName' => $this->profile->first_name,
+            'lastName' => $this->profile->last_name,
+            'fullName' => function ($model) {
+                return $model->profile->first_name . ' ' . $model->profile->last_name;
+            },
+            'email_confirm_token',
+            'auth_key',
+            'status'
+        ];
+    }
+
     public function getProfile()
     {
         return $this->hasOne(Profile::className(), ['user_id' => 'id']);
@@ -74,10 +92,10 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         if (parent::beforeSave($insert)) {
             if($insert == true){
                 $this->status = self::STATUS_WAIT;
-                $this->uniqueUsername();
+               // $this->uniqueUsername();
                 $this->generateAuthKey();
                 $this->generateEmailConfirmToken();
-                $this->setPassword($this->password);
+                $this->setPassword();
             }
             return true;
         } else {
@@ -109,6 +127,38 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
                 'class' => \yii\behaviors\TimestampBehavior::className(),
             ],
         ];
+    }
+
+    public static function create($data){
+
+        $oUser = new self;
+
+        $oUser->scenario = 'register';
+
+        $oUser->attributes = $data;
+
+        $oUser->generateAuthKey();
+
+        $oUser->setPassword();
+
+        $oUser->generateEmailConfirmToken();
+
+        $transaction = \Yii::$app->db->beginTransaction();
+
+        $profile = new Profile();
+
+        $profile->attributes = $data;
+
+
+        if ($oUser->save()) {
+            $oUser->link('profile', $profile);
+            $transaction->commit();
+        }
+
+        $profile->validate();
+
+        return $oUser;
+
     }
 
     /**
@@ -196,11 +246,10 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     /**
      * Generates password hash from password and sets it to the model
      *
-     * @param string $password
      */
-    public function setPassword($password)
+    public function setPassword()
     {
-        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+        $this->password_hash = Yii::$app->security->generatePasswordHash($this->password);
     }
 
     /**

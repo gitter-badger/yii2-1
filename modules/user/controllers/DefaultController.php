@@ -8,15 +8,15 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Html;
 use yii\web\BadRequestHttpException;
 
-use app\models\User;
+use app\models\RegistrationForm;
 use app\models\LoginForm;
 
 use app\modules\user\models\Profile;
 
-use app\modules\user\helpers\GenerateUsername;
-use app\modules\user\models\ConfirmEmailForm;
-use app\modules\user\models\PasswordResetRequestForm;
-use app\modules\user\models\ResetPasswordForm;
+//use app\modules\user\helpers\GenerateUsername;
+//use app\modules\user\models\ConfirmEmailForm;
+//use app\modules\user\models\PasswordResetRequestForm;
+//use app\modules\user\models\ResetPasswordForm;
 
 class DefaultController extends Controller
 {
@@ -27,11 +27,11 @@ class DefaultController extends Controller
 
     public function actionRegistration(){
 
-        $user = new User;
-        $user->scenario = 'register';
-        $profile = new Profile;
+        $model = new RegistrationForm();
+        //$user->scenario = 'register';
+        //$profile = new Profile;
 
-        $request = Yii::$app->request;
+        /*$request = Yii::$app->request;
         if ($request->isAjax && $user->load($request->post()) && $profile->load($request->post())) {
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             $errors = ActiveForm::validate($user, $profile);
@@ -63,11 +63,10 @@ class DefaultController extends Controller
                 }
             }
             Yii::$app->end();
-        }
+        } */
 
         return $this->render('registration', [
-            'user' => $user,
-            'profile' => $profile
+            'model' => $model,
         ]);
     }
 

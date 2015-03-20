@@ -4,8 +4,8 @@ namespace app\modules\v1\controllers;
 
 use yii\rest\Controller;
 
-//use app\models\User;
 use app\models\LoginForm;
+use app\models\RegistrationForm;
 
 class UserController extends Controller
 {
@@ -18,10 +18,23 @@ class UserController extends Controller
     public function actionLogin()
     {
         $model = new LoginForm();
-        if ($model->load(\Yii::$app->getRequest()->getBodyParams(), '') && $model->login()) {
+        if ($model->load(\Yii::$app->request->post(), '') && $model->login()) {
             echo \Yii::$app->user->identity->getAuthKey();
         } else {
-            $model->validate();
+            return $model;
+        }
+    }
+
+    /**
+     * Регистрация на сайте
+     * @return RegistrationForm|bool
+     */
+    public function actionRegistration()
+    {
+        $model = new RegistrationForm();
+        if ($model->load(\Yii::$app->request->post(), '') && $model->registration()) {
+            return true;
+        } else {
             return $model;
         }
     }
