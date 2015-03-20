@@ -2,9 +2,27 @@
 
 namespace app\models;
 
-use app\modules\user\models\Profile;
 use Yii;
 use yii\caching\DbDependency;
+
+/**
+ * This is the model class for table "y_user".
+ *
+ * @property integer $id
+ * @property string $username
+ * @property string $email
+ * @property string $password_hash
+ * @property string $password_reset_token
+ * @property string $auth_key
+ * @property string $email_confirm_token
+ * @property string $role
+ * @property integer $created_at
+ * @property integer $updated_at
+ * @property integer $lastvisit_at
+ * @property integer $status
+ *
+ * @property Profile $profile
+ */
 
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
@@ -12,40 +30,51 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     const STATUS_ACTIVE = 1;
     const STATUS_BLOCKED = 2;
 
+    /** @var string */
     public $password;
 
+    /**
+     * @inheritdoc
+     */
     public static function tableName()
     {
         return '{{%user}}';
     }
 
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
+            ['email', 'required'],
+            ['email', 'email'],
+            ['email', 'unique'],
+
+            ['password', 'required'],
+            ['password', 'string', 'max' => 60],
+
+            ['username', 'string', 'max' => 25],
+            ['username', 'unique'],
+
             [['email', 'password'], 'required', 'on'=>'register'],
             ['email', 'email'],
 
-            [['created_at', 'updated_at', 'lastvisit_at', 'status'], 'integer'],
-            [['username'], 'string', 'max' => 25],
-            [['email'], 'string', 'max' => 255],
-            [['password'], 'string', 'max' => 60],
-            [['role'], 'string', 'max' => 20],
+            ['created_at', 'integer'],
 
-            [['email'], 'unique'],
+            ['updated_at', 'integer'],
 
-            [['username'], 'unique', 'on'=>'update'],
+            ['lastvisit_at', 'integer'],
+
+            ['status', 'integer'],
+
+            ['role', 'string', 'max' => 20],
         ];
     }
 
-    public static function getStatusesArray()
-    {
-        return [
-            self::STATUS_BLOCKED => 'Заблокирован',
-            self::STATUS_ACTIVE => 'Активен',
-            self::STATUS_WAIT => 'Ожидает подтверждения',
-        ];
-    }
-
+    /**
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return [
@@ -82,17 +111,35 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getProfile()
     {
         return $this->hasOne(Profile::className(), ['user_id' => 'id']);
     }
 
+    /**
+     * Все доступные пользователю статусы
+     * @return array
+     */
+    public static function getStatusesArray()
+    {
+        return [
+            self::STATUS_BLOCKED => 'Заблокирован',
+            self::STATUS_ACTIVE => 'Активен',
+            self::STATUS_WAIT => 'Ожидает подтверждения',
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
             if($insert == true){
                 $this->status = self::STATUS_WAIT;
-               // $this->uniqueUsername();
                 $this->generateAuthKey();
                 $this->generateEmailConfirmToken();
                 $this->setPassword();
@@ -103,6 +150,10 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         }
     }
 
+    /**
+     * Устанавливает уникальный username пользователю
+     * @param null $username
+     */
     public function uniqueUsername( $username = null ){
         if($username == null) $username = $this->username;
         $user = self::find()->where(['username' => $username])->one();
@@ -120,6 +171,9 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         }
     }
 
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [
@@ -129,40 +183,11 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         ];
     }
 
-    public static function create($data){
-
-        $oUser = new self;
-
-        $oUser->scenario = 'register';
-
-        $oUser->attributes = $data;
-
-        $oUser->generateAuthKey();
-
-        $oUser->setPassword();
-
-        $oUser->generateEmailConfirmToken();
-
-        $transaction = \Yii::$app->db->beginTransaction();
-
-        $profile = new Profile();
-
-        $profile->attributes = $data;
-
-
-        if ($oUser->save()) {
-            $oUser->link('profile', $profile);
-            $transaction->commit();
-        }
-
-        $profile->validate();
-
-        return $oUser;
-
-    }
-
     /**
-     * @inheritdoc
+     * Поиск пользователя по id
+     *
+     * @param int|string $id
+     * @return User|null
      */
     public static function findIdentity($id)
     {
@@ -188,9 +213,9 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     }
 
     /**
-     * Finds user by username
+     * Поиск пользователя по username
      *
-     * @param  string      $username
+     * @param  string $username
      * @return static|null
      */
     public static function findByUsername($username)
@@ -233,7 +258,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     }
 
     /**
-     * Validates password
+     * Валидация пароля
      *
      * @param string $password password to validate
      * @return boolean if password provided is valid for current user
@@ -245,7 +270,6 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
     /**
      * Generates password hash from password and sets it to the model
-     *
      */
     public function setPassword()
     {

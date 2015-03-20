@@ -6,7 +6,7 @@ use yii\base\Model;
 use app\modules\user\helpers\GenerateUsername;
 
 /**
- * Login form
+ * Форма регистрации
  */
 class RegistrationForm extends Model
 {
