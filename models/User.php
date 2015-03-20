@@ -143,6 +143,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
                 $this->generateAuthKey();
                 $this->generateEmailConfirmToken();
                 $this->setPassword();
+                $this->sendEmailConfirm();
             }
             return true;
         } else {
@@ -357,5 +358,20 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+
+    /**
+     * Отправка письма для подтрерждения email адреса при регистрации
+     * @return bool
+     */
+    public function sendEmailConfirm(){
+        $confirmLink = Yii::$app->urlManager
+            ->createAbsoluteUrl(['user/default/confirm-email', 'token' => $this->email_confirm_token]);
+        return Yii::$app->mailer
+            ->compose('confirmEmail', ['confirmLink' => $confirmLink, 'username' => $this->username ])
+            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
+            ->setTo($this->email)
+            ->setSubject('Подтверждения email адреса ' . Yii::$app->name)
+            ->send();
     }
 }

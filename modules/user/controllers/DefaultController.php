@@ -5,18 +5,10 @@ namespace app\modules\user\controllers;
 use Yii;
 use yii\web\Controller;
 use yii\widgets\ActiveForm;
-use yii\helpers\Html;
 use yii\web\BadRequestHttpException;
 
 use app\models\RegistrationForm;
 use app\models\LoginForm;
-
-use app\modules\user\models\Profile;
-
-//use app\modules\user\helpers\GenerateUsername;
-//use app\modules\user\models\ConfirmEmailForm;
-//use app\modules\user\models\PasswordResetRequestForm;
-//use app\modules\user\models\ResetPasswordForm;
 
 class DefaultController extends Controller
 {
@@ -25,45 +17,14 @@ class DefaultController extends Controller
         return $this->render('index');
     }
 
+    /**
+     * Открывает форму для регистрации
+     *
+     * @return string
+     */
     public function actionRegistration(){
 
         $model = new RegistrationForm();
-        //$user->scenario = 'register';
-        //$profile = new Profile;
-
-        /*$request = Yii::$app->request;
-        if ($request->isAjax && $user->load($request->post()) && $profile->load($request->post())) {
-            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-            $errors = ActiveForm::validate($user, $profile);
-            if(count($errors) != 0){
-                echo json_encode($errors);
-            } else {
-                $user->username = GenerateUsername::run($profile->first_name . '_' . $profile->last_name);
-                $transaction = Yii::$app->db->beginTransaction();
-                try {
-                    if (!$user->save()) {
-                        throw new \Exception( Html::errorSummary($user) );
-                    }
-                    $profile->user_id = $user->id;
-                    if (!$profile->save())
-                        throw new \Exception( Html::errorSummary($profile) );
-                    $m = Yii::$app->mailer->compose('confirmEmail', ['user' => $user])
-                        ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
-                        ->setTo($user->email)
-                        ->setSubject('Email confirmation for ' . Yii::$app->name)
-                        ->send();
-                    $transaction->commit();
-                    Yii::$app->session->setFlash('success','Регистрация прошла успешно.');
-                    echo json_encode([
-                        'url' => Yii::$app->homeUrl
-                    ]);
-                } catch (\Exception $e) {
-                    $transaction->rollBack();
-                    Yii::$app->errorHandler->handleException($e);
-                }
-            }
-            Yii::$app->end();
-        } */
 
         return $this->render('registration', [
             'model' => $model,
