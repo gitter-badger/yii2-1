@@ -374,4 +374,44 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             ->setSubject('Подтверждения email адреса ' . Yii::$app->name)
             ->send();
     }
+
+    /**
+     * Подтверждение имейла из письма высланного на email при регистрации
+     * @params string $token
+     * @return array - статус и сообщение о результате
+     */
+    public static function confirmEmail($token){
+        if (empty($token) || !is_string($token))
+            return [
+                'status' => false,
+                'message' => 'Отсутствует код подтверждения.'
+            ];
+        $user = self::findByEmailConfirmToken($token);
+        if (!$user)
+            return [
+                'status' => 'error',
+                'message' => 'Неверный токен.'
+            ];
+        if($user->status == self::STATUS_ACTIVE)
+            return [
+                'status' => 'success',
+                'message' => 'Ваш акаунт активен.'
+            ];
+        if($user->status == self::STATUS_BLOCKED)
+            return [
+                'status' => 'error',
+                'message' => 'Ваш акаунт заблокирован администрацией.'
+            ];
+        $user->status = self::STATUS_ACTIVE;
+        if($user->save(false))
+            return [
+                'status' => 'success',
+                'message' => 'Email успешно подтвержден и акаунт активирован.'
+            ];
+        else
+            return [
+                'status' => 'error',
+                'message' => 'Произошла ошибка активации акаунта. Попробуйте еще раз или напишите нам.'
+            ];
+    }
 }

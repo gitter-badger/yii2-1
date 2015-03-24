@@ -9,6 +9,7 @@ use yii\web\BadRequestHttpException;
 
 use app\models\RegistrationForm;
 use app\models\LoginForm;
+use app\models\User;
 
 class DefaultController extends Controller
 {
@@ -47,25 +48,21 @@ class DefaultController extends Controller
         ]);
     }
 
-    public function actionLogout(){
-        Yii::$app->user->logout();
+    /**
+     * Подтверждения email адреса из письма отправленого при регистрации
+     * @param $token
+     * @return \yii\web\Response
+     */
+    public function actionConfirmEmail($token)
+    {
+        $confirm = User::confirmEmail($token);
+        Yii::$app->getSession()->setFlash( $confirm['status'], $confirm['message']);
+
         return $this->goHome();
     }
 
-    public function actionConfirmEmail($token)
-    {
-        try {
-            $model = new ConfirmEmailForm($token);
-        } catch (InvalidParamException $e) {
-            throw new BadRequestHttpException($e->getMessage());
-        }
-
-        if ($model->confirmEmail()) {
-            Yii::$app->getSession()->setFlash('success', 'Спасибо! Ваш Email успешно подтверждён.');
-        } else {
-            Yii::$app->getSession()->setFlash('error', 'Ошибка подтверждения Email.');
-        }
-
+    public function actionLogout(){
+        Yii::$app->user->logout();
         return $this->goHome();
     }
 
