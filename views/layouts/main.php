@@ -10,20 +10,8 @@ use app\assets\AppAsset;
 
 AppAsset::register($this);
 
-$success = Yii::$app->session->hasFlash('success');
-$error = Yii::$app->session->hasFlash('error');
-if($success || $error){
-    if($success){
-        $message = Yii::$app->session->getFlash('success');
-        $class = 'alert-success';
-    } else{
-        $message = Yii::$app->session->getFlash('error');
-        $class = 'alert-danger';
-    }
-    $this->registerJs("
-            app.alert('{$message}', '{$class}');
-    ", yii\web\View::POS_END, 'alert');
-}
+$successFlash = Yii::$app->session->hasFlash('success');
+$errorFlash = Yii::$app->session->hasFlash('error');
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -36,7 +24,17 @@ if($success || $error){
     <?php $this->head() ?>
 </head>
 <body>
-<div class="modal fade"></div>
+<?php if($successFlash || $errorFlash){
+    if($successFlash){
+        $message = Yii::$app->session->getFlash('success');
+        $class = 'alert-success';
+    } else {
+        $message = Yii::$app->session->getFlash('error');
+        $class = 'alert-danger';
+    }
+    echo "<flash message='$message' class-name='$class'></flash>";
+}
+?>
 <toaster-container></toaster-container>
 <?php $this->beginBody() ?>
     <div class="wrap">

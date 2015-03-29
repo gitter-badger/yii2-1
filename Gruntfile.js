@@ -24,7 +24,11 @@ module.exports = function(grunt) {
                     bower + 'angular-route/angular-route.js',
                     bower + 'angularjs-toaster/toaster.js',
 
-                    bower + 'bootstrap/dist/js/bootstrap.min.js',
+                    //bower + 'angular-bootstrap/ui-bootstrap.min.js',
+                    bower + 'angular-bootstrap/ui-bootstrap-tpls.min.js',
+
+
+                    //bower + 'bootstrap/dist/js/bootstrap.min.js',
 
                     bower + 'ladda/dist/spin.min.js',
                     bower + 'ladda/dist/ladda.min.js',

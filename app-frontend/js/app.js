@@ -13,7 +13,8 @@ angular.module('myApp', [
         'ngResource',
         'ngRoute',
         'angular-ladda',
-        'toaster'
+        'toaster',
+        'ui.bootstrap'
         // 'ngSanitize',
         // 'ngTouch'
     ])

@@ -4,3 +4,9 @@
 .modal .modal-content{
     border-radius: 0;
 }
+.flash-modal-body{
+    padding: 15px;
+    border-radius: 0px !important ;
+    margin-bottom:0px;
+    font-size: 16px
+}
